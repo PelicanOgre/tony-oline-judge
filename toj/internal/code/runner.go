@@ -34,6 +34,7 @@ func main() {
 	fmt.Println(out.String())
 
 	println(out.String() == "34\n")
+	println(out.String())
 	var em runtime.MemStats
 	runtime.ReadMemStats(&em)
 	fmt.Printf("KB: %v\n", em.Alloc/1024)

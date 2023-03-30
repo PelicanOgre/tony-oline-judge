@@ -113,7 +113,7 @@ func SendCode(c *gin.Context) {
 		return
 	}
 	code := helper.GetRand()
-	models.RDB.Set(c, email, code, time.Second*300)
+	models.RDB.Set(c, email, code, time.Second*600)
 	err := helper.SendCode(email, code)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{

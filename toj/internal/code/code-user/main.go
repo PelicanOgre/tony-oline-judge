@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// 两数之和
+// two sum
 func main() {
 	var a, b int
 	fmt.Scanln(&a, &b)

@@ -25,7 +25,6 @@ type UserClaims struct {
 }
 
 // GetMd5
-// Generate md5
 func GetMd5(s string) string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(s)))
 }
@@ -33,7 +32,6 @@ func GetMd5(s string) string {
 var myKey = []byte("toj-key")
 
 // GenerateToken
-// Generate token
 func GenerateToken(identity, name string, isAdmin int) (string, error) {
 	UserClaim := &UserClaims{
 		Identity:       identity,
@@ -50,7 +48,6 @@ func GenerateToken(identity, name string, isAdmin int) (string, error) {
 }
 
 // AnalyseToken
-// Parse token
 func AnalyseToken(tokenString string) (*UserClaims, error) {
 	userClaim := new(UserClaims)
 	claims, err := jwt.ParseWithClaims(tokenString, userClaim, func(token *jwt.Token) (interface{}, error) {
@@ -66,13 +63,12 @@ func AnalyseToken(tokenString string) (*UserClaims, error) {
 }
 
 // SendCode
-// 发送验证码
 func SendCode(toUserEmail, code string) error {
 	e := email.NewEmail()
 	e.From = "Get <tojproject@163.com>"
 	e.To = []string{toUserEmail}
-	e.Subject = "验证码已发送，请查收"
-	e.HTML = []byte("您的验证码：<b>" + code + "</b>")
+	e.Subject = "The verification code has been sent successfully, please check!"
+	e.HTML = []byte("Your TOJ Verification Code(Valid for 10 Minutes): <b>" + code + "</b>")
 	return e.SendWithTLS("smtp.163.com:465",
 		smtp.PlainAuth("", "tojproject@163.com", "HFTHAYCSPVUMZHEI", "smtp.163.com"),
 		&tls.Config{InsecureSkipVerify: true, ServerName: "smtp.163.com"})
@@ -80,13 +76,11 @@ func SendCode(toUserEmail, code string) error {
 }
 
 // GetUUID
-// 生成唯一码
 func GetUUID() string {
 	return uuid.NewV4().String()
 }
 
 // GetRand
-// 生成验证码
 func GetRand() string {
 	rand.Seed(time.Now().UnixNano())
 	s := ""
@@ -97,7 +91,6 @@ func GetRand() string {
 }
 
 // CodeSave
-// 保存代码
 func CodeSave(code []byte) (string, error) {
 	dirName := "code/" + GetUUID()
 	path := dirName + "/main.go"
@@ -115,7 +108,6 @@ func CodeSave(code []byte) (string, error) {
 }
 
 // CheckGoCodeValid
-// 检查golang代码的合法性
 func CheckGoCodeValid(path string) (bool, error) {
 	b, err := ioutil.ReadFile(path)
 	if err != nil {

@@ -3,11 +3,6 @@ package service
 import (
 	"bytes"
 	"errors"
-	"toj/define"
-	"toj/helper"
-	"toj/models"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"io"
 	"io/ioutil"
 	"log"
@@ -17,6 +12,12 @@ import (
 	"strconv"
 	"sync"
 	"time"
+	"toj/define"
+	"toj/helper"
+	"toj/models"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 // GetSubmitList
@@ -152,6 +153,8 @@ func Submit(c *gin.Context) {
 				if err != nil {
 					log.Fatalln(err)
 				}
+				print("i")
+				print(testCase.Input)
 				io.WriteString(stdinPipe, testCase.Input+"\n")
 
 				var bm runtime.MemStats
@@ -167,8 +170,14 @@ func Submit(c *gin.Context) {
 				var em runtime.MemStats
 				runtime.ReadMemStats(&em)
 
+				print("t")
+				print(testCase.Output)
+				print("o")
+				print(out.String())
+
 				// 答案错误
 				if testCase.Output != out.String() {
+					
 					WA <- 1
 					return
 				}
@@ -189,26 +198,26 @@ func Submit(c *gin.Context) {
 
 	select {
 	case <-EC:
-		msg = "无效代码"
+		msg = "Invalid Code"
 		sb.Status = 6
 	case <-WA:
-		msg = "答案错误"
+		msg = "Wrong Answer"
 		sb.Status = 2
 	case <-OOM:
-		msg = "运行超内存"
+		msg = "Memory Exceeded"
 		sb.Status = 4
 	case <-CE:
 		sb.Status = 5
 	case <-AC:
-		msg = "答案正确"
+		msg = "Accepted"
 		sb.Status = 1
 	case <-time.After(time.Millisecond * time.Duration(pb.MaxRuntime)):
 		if passCount == len(pb.TestCases) {
 			sb.Status = 1
-			msg = "答案正确"
+			msg = "Accepted"
 		} else {
 			sb.Status = 3
-			msg = "运行超时"
+			msg = "Time Limtation Exceeded"
 		}
 	}
 
