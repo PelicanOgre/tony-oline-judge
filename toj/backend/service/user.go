@@ -69,7 +69,7 @@ func Login(c *gin.Context) {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusOK, gin.H{
 				"code": -1,
-				"msg":  "用户名或密码错误",
+				"msg":  "Username or Password error",
 			})
 			return
 		}
@@ -108,7 +108,7 @@ func SendCode(c *gin.Context) {
 	if email == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数不正确",
+			"msg":  "parameter is incorrect",
 		})
 		return
 	}
@@ -124,7 +124,7 @@ func SendCode(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "验证码发送成功",
+		"msg":  "Verification code sent successfully",
 	})
 }
 
@@ -147,7 +147,7 @@ func Register(c *gin.Context) {
 	if mail == "" || userCode == "" || name == "" || password == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数不正确",
+			"msg":  "parameter is incorrect",
 		})
 		return
 	}
@@ -157,14 +157,14 @@ func Register(c *gin.Context) {
 		log.Printf("Get Code Error:%v \n", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "验证码不正确，请重新获取验证码",
+			"msg":  "The verification code is incorrect. Please obtain the verification code again",
 		})
 		return
 	}
 	if sysCode != userCode {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "验证码不正确",
+			"msg":  "Incorrect verification code",
 		})
 		return
 	}
@@ -181,7 +181,7 @@ func Register(c *gin.Context) {
 	if cnt > 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "该邮箱已被注册",
+			"msg":  "This mailbox has already been registered",
 		})
 		return
 	}

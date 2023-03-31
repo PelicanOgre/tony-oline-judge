@@ -64,7 +64,7 @@ func GetProblemDetail(c *gin.Context) {
 	if identity == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "问题唯一标识不能为空",
+			"msg":  "The unique identifier of the problem cannot be empty",
 		})
 		return
 	}
@@ -76,7 +76,7 @@ func GetProblemDetail(c *gin.Context) {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusOK, gin.H{
 				"code": -1,
-				"msg":  "问题不存在",
+				"msg":  "The problem does not exist",
 			})
 			return
 		}
@@ -107,7 +107,7 @@ func ProblemCreate(c *gin.Context) {
 		log.Println("[JsonBind Error] : ", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数错误",
+			"msg":  "Parameter error",
 		})
 		return
 	}
@@ -115,7 +115,7 @@ func ProblemCreate(c *gin.Context) {
 	if in.Title == "" || in.Content == "" || len(in.ProblemCategories) == 0 || len(in.TestCases) == 0 || in.MaxRuntime == 0 || in.MaxMem == 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数不能为空",
+			"msg":  "Parameter cannot be empty",
 		})
 		return
 	}
@@ -187,14 +187,14 @@ func ProblemModify(c *gin.Context) {
 		log.Println("[JsonBind Error] : ", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数错误",
+			"msg":  "Parameter error",
 		})
 		return
 	}
 	if in.Identity == "" || in.Title == "" || in.Content == "" || len(in.ProblemCategories) == 0 || len(in.TestCases) == 0 || in.MaxRuntime == 0 || in.MaxMem == 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数不能为空",
+			"msg":  "Parameter cannot be empty",
 		})
 		return
 	}
@@ -272,6 +272,6 @@ func ProblemModify(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "问题修改成功",
+		"msg":  "Problem modified successfully",
 	})
 }

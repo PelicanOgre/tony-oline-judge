@@ -19,12 +19,12 @@
             <el-input v-model="ruleForm.username"/>
           </el-form-item>
 
-          <el-form-item label="Password" prop="password">
+          <el-form-item label="Passwor" prop="password">
             <el-input v-model="ruleForm.password" show-password/>
           </el-form-item>
           <div style="text-align: center">
             <el-button type="primary" @click="submitForm(ruleFormRef)"
-            >登录
+            >Login
             </el-button
             >
           </div>
@@ -44,7 +44,7 @@
             <el-input v-model="registForm.name"/>
           </el-form-item>
 
-          <el-form-item label="Password" prop="password">
+          <el-form-item label="Passwor" prop="password">
             <el-input v-model="registForm.password" show-password/>
           </el-form-item>
           <el-form-item label="Email" prop="mail">
@@ -66,7 +66,7 @@
 
           <div style="text-align: center">
             <el-button type="primary" @click="subRegister(registFormRef)"
-            >注册
+            >register
             </el-button
             >
           </div>

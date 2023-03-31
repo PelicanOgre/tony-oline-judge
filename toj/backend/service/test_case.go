@@ -30,7 +30,7 @@ func GetTestCase(c *gin.Context) {
 	if problemIdentity == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "问题唯一标识不能为空",
+			"msg":  "The unique identifier of the problem cannot be empty",
 		})
 		return
 	}

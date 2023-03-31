@@ -37,7 +37,7 @@ func GetCategoryList(c *gin.Context) {
 		log.Println("GetCategoryList Error:", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "获取分类列表失败",
+			"msg":  "Failed to obtain the classification list",
 		})
 		return
 	}
@@ -73,13 +73,13 @@ func CategoryCreate(c *gin.Context) {
 		log.Println("CategoryCreate Error:", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "创建分类失败",
+			"msg":  "Failed to create category",
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "创建成功",
+		"msg":  "Created successfully",
 	})
 }
 
@@ -99,7 +99,7 @@ func CategoryModify(c *gin.Context) {
 	if name == "" || identity == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数不正确",
+			"msg":  "parameter is incorrect",
 		})
 		return
 	}
@@ -114,13 +114,13 @@ func CategoryModify(c *gin.Context) {
 		log.Println("CategoryModify Error:", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "修改分类失败",
+			"msg":  "Failed to modify category",
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "修改成功",
+		"msg":  "Modify Successfully",
 	})
 }
 
@@ -136,7 +136,7 @@ func CategoryDelete(c *gin.Context) {
 	if identity == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "参数不正确",
+			"msg":  "parameter is incorrect",
 		})
 		return
 	}
@@ -146,14 +146,14 @@ func CategoryDelete(c *gin.Context) {
 		log.Println("Get ProblemCategory Error:", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "获取分类关联的问题失败",
+			"msg":  "Failed to obtain the issue associated with the category",
 		})
 		return
 	}
 	if cnt > 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "该分类下面已存在问题，不可删除",
+			"msg":  "There is already a problem under this category and cannot be deleted",
 		})
 		return
 	}
@@ -162,12 +162,12 @@ func CategoryDelete(c *gin.Context) {
 		log.Println("Delete CategoryBasic Error:", err)
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
-			"msg":  "删除失败",
+			"msg":  "Delete failed",
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"msg":  "删除成功",
+		"msg":  "Delete successfully",
 	})
 }
