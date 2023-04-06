@@ -13,8 +13,8 @@
                     </div>
                     <div class="msg">
                         
-                        <span>提交数：{{item.submit_num}}</span>
-                        <span>通过数：{{item.pass_num}}</span>
+                        <span>Submitions: {{item.submit_num}}</span>
+                        <span>Pass: {{item.pass_num}}</span>
                     </div>
                 
                 <!-- <div class="edit">

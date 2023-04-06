@@ -59,7 +59,7 @@ service.interceptors.response.use((config) => {
 
 				break
 			default:
-				if (errorMessage === 'refresh token无效') {
+				if (errorMessage === 'refresh token not found') {
 					ElMessage('Login has expired, please login again')
 						 
 

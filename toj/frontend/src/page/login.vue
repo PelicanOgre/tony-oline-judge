@@ -15,11 +15,11 @@
             class="login-form"
             :size="formSize"
         >
-          <el-form-item label="Account" prop="username">
+          <el-form-item label="Username" prop="username">
             <el-input v-model="ruleForm.username"/>
           </el-form-item>
 
-          <el-form-item label="Passwor" prop="password">
+          <el-form-item label="Password" prop="password">
             <el-input v-model="ruleForm.password" show-password/>
           </el-form-item>
           <div style="text-align: center">
@@ -40,11 +40,11 @@
             class="login-form"
             :size="formSize"
         >
-          <el-form-item label="Account" prop="name">
+          <el-form-item label="Username" prop="name">
             <el-input v-model="registForm.name"/>
           </el-form-item>
 
-          <el-form-item label="Passwor" prop="password">
+          <el-form-item label="Password" prop="password">
             <el-input v-model="registForm.password" show-password/>
           </el-form-item>
           <el-form-item label="Email" prop="mail">
@@ -66,7 +66,7 @@
 
           <div style="text-align: center">
             <el-button type="primary" @click="subRegister(registFormRef)"
-            >register
+            >Register
             </el-button
             >
           </div>

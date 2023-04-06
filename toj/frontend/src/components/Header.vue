@@ -42,7 +42,7 @@ const handleCommand = (command: string | number | object) => {
       <el-dropdown @command="handleCommand" v-if="isLogin">
 
         <div class="el-dropdown-link">
-          <el-avatar :size="25" :src="circleUrl" />
+          
           <span>Hello! {{username}}</span>
            
            <el-icon><setting /></el-icon>

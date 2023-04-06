@@ -64,6 +64,7 @@ CREATE TABLE `submit_basic` (
   `user_identity` varchar(36) DEFAULT NULL COMMENT '用户的唯一标识',
   `path` varchar(255) DEFAULT NULL COMMENT '代码路径',
   `status` tinyint(1) DEFAULT '-1' COMMENT '【-1-待判断，1-答案正确，2-答案错误，3-运行超时，4-运行超内存】',
+  `src ` text DEFAULT NULL COMMENT 'Source',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
