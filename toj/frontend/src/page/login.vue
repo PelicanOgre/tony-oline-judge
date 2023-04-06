@@ -11,7 +11,7 @@
             ref="ruleFormRef"
             :model="ruleForm"
             :rules="rules"
-            label-width="80px"
+            label-width="100px"
             class="login-form"
             :size="formSize"
         >
@@ -36,7 +36,7 @@
             ref="registFormRef"
             :model="registForm"
             :rules="rules"
-            label-width="80px"
+            label-width="100px"
             class="login-form"
             :size="formSize"
         >
@@ -56,7 +56,7 @@
                 <el-input v-model="registForm.code"/>
               </el-col>
               <el-col :span="12" style="text-align:right;">
-                <el-button disabled v-if="remainTime>0&&remainTime<60">{{ remainTime }}秒</el-button>
+                <el-button disabled v-if="remainTime>0&&remainTime<60">{{ remainTime }}s</el-button>
                 <el-button @click="sendCode" v-else type="primary">Send Code</el-button>
               </el-col>
             </el-row>
@@ -71,6 +71,49 @@
             >
           </div>
         </el-form>
+      </el-tab-pane>
+
+      <el-tab-pane label="Forget Password" name="third">
+
+      <el-form
+          ref="resetPasswordFormRef"
+          :model="resetPasswordForm"
+          :rules="rules"
+          label-width="100px"
+          class="login-form"
+          :size="formSize"
+      >
+      
+      <el-form-item label="Username" prop="name">
+            <el-input v-model="resetPasswordForm.name"/>
+          </el-form-item>
+        <el-form-item label="Email" prop="mail">
+          <el-input v-model="resetPasswordForm.mail"/>
+        </el-form-item>
+        <el-form-item label="Code" prop="code">
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-input v-model="resetPasswordForm.code"/>
+            </el-col>
+            <el-col :span="12" style="text-align:right;">
+              <el-button disabled v-if="remainTime>0&&remainTime<60">{{ remainTime }}s</el-button>
+              <el-button @click="sendCode1" v-else type="primary">Send Code</el-button>
+            </el-col>
+          </el-row>
+
+
+        </el-form-item>
+        <el-form-item label="Password" prop="password">
+          <el-input v-model="resetPasswordForm.password" show-password/>
+        </el-form-item>
+
+        <div style="text-align: center">
+          <el-button type="primary" @click="subReset(resetPasswordFormRef)"
+          >Reset Password
+          </el-button
+          >
+        </div>
+      </el-form>
       </el-tab-pane>
 
     </el-tabs>
@@ -95,6 +138,7 @@ const formSize = ref("default");
 const store = useStore();
 const ruleFormRef = ref<FormInstance>();
 const registFormRef = ref<FormInstance>()
+const resetPasswordFormRef = ref<FormInstance>()
 const remainTime = ref(60)
 const ruleForm = reactive({
   username: "",
@@ -105,7 +149,16 @@ const registForm = reactive({
   password: "",
   mail: '',
   code: ''
-})
+});
+
+const resetPasswordForm = reactive({
+  name: "",
+  password: "",
+  mail: '',
+  code: ''
+  
+});
+
 const rules = reactive({
   username: [
     {required: true, message: "Please Enter Username", trigger: "blur"},
@@ -165,7 +218,7 @@ const subRegister = async (formEl: FormInstance | undefined) => {
     if (valid) {
       api.register(registForm).then((res:any) => {
         if (res.data.code == 200) {
-          ElMessage.success('Register Success!')
+          ElMessage.success('Register Successfully!')
           localStorage.setItem("token", res.data.data.token);
           store.commit("loginSucc", res.data.data.token);
           store.commit("setUser", {username: registForm.name, is_admin: res.data.data.is_admin});
@@ -185,6 +238,35 @@ const subRegister = async (formEl: FormInstance | undefined) => {
     }
   });
 };
+
+const subReset = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      api.forgetPassword(resetPasswordForm).then((res:any) => {
+        if (res.data.code == 200) {
+          ElMessage.success('reset Successfully!')
+          localStorage.setItem("token", res.data.data.token);
+          store.commit("loginSucc", res.data.data.token);
+          store.commit("setUser", {username: resetPasswordForm.name, is_admin: res.data.data.is_admin});
+
+          localStorage.setItem('username', resetPasswordForm.name)
+          localStorage.setItem('is_admin', res.data.data.is_admin)
+
+          emits("loginSucc");
+        } else {
+          ElMessage.error(res.data.msg)
+
+        }
+      })
+      // router.push('/index')
+    } else {
+      console.log("error submit!", fields);
+    }
+  });
+};
+
+
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
@@ -214,6 +296,24 @@ const sendCode = () => {
     ElMessage('please Enter Correct Email Address!')
   }
 }
+const sendCode1 = () => {
+  const re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+  if (re.test(resetPasswordForm.mail)) {
+    startRemain()
+    console.log(resetPasswordForm.mail)
+    api.sendCode({
+      email: resetPasswordForm.mail
+    }).then((res: any) => {
+      if (res.data.code == 200) {
+        ElMessage.success(res.data.msg)
+      } else {
+        ElMessage.error(res.data.msg)
+      }
+    })
+  } else {
+    ElMessage('please Enter Correct Email Address!')
+  }
+}
 </script>
 <style lang="scss" scoped>
 .login-page {
@@ -226,8 +326,8 @@ const sendCode = () => {
 
 .login-form {
   /*widows: 300px;*/
-  border: 1px solid #eee;
-  padding: 40px 80px 20px 80px;
-  border-radius: 10px;
+  border: 3px solid #eee;
+  padding: 50px 90px 40px 90px;
+  border-radius: 15px;
 }
 </style>

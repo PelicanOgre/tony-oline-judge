@@ -48,6 +48,7 @@ const routes=[
                 component:()=>import('../page/submit/index.vue')
             },
             
+            
         ]
     },
     {

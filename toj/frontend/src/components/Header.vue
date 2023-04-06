@@ -22,10 +22,12 @@ const handleCommand = (command: string | number | object) => {
     localStorage.clear()
     // location.reload()
     store.commit('logout')
+
+    router.push('/questionList')
   }else if(command=='b'){//分类
     router.push('/questionManage')
-  }else if(command=='c'){//问题
-    ElMessage('Coming soon')
+  }else if(command=='c'){//忘记密码
+    router.push('/forgetPassword')
 
   }
 }
@@ -84,7 +86,7 @@ const handleCommand = (command: string | number | object) => {
 
 <style scoped lang="scss">
 .fold{
-  padding-left: 10px;
+  padding-left: 20px;
 }
  /* .user-msg{
    display: flex;
@@ -96,16 +98,18 @@ const handleCommand = (command: string | number | object) => {
  } */
  .el-dropdown-link{
    display: flex;
+   font-size: 20px;
    justify-content: space-between;
    align-items: center;
-    padding-right: 20px;
+    padding-right: 30px;
     span{
       padding: 0 10px;
     }
  }
  .login{
    color: white;
-   padding: 0 20px;
+   padding: 0 30px;
    cursor: pointer;
+   font-size: 20px;
  }
 </style>

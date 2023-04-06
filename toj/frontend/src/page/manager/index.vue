@@ -316,6 +316,7 @@ const toDetail = (item: any) => {
     }
   }
   .msg {
+    
     font-size: 14px;
     color: #999;
     span {
@@ -324,6 +325,7 @@ const toDetail = (item: any) => {
   }
 }
 .sort-list {
+  font-size: 20px;
   // display: flex;
   width: 250px;
   align-items: center;
@@ -339,6 +341,7 @@ const toDetail = (item: any) => {
     padding: 10px;
   }
   .edit {
+    font-size: 20px;
     width: 20%;
     display: flex;
     justify-content: space-between;

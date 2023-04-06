@@ -30,6 +30,7 @@ func Router() *gin.Engine {
 	r.POST("/login", service.Login)
 	r.POST("/send-code", service.SendCode)
 	r.POST("/register", service.Register)
+	r.POST("/forget-password", service.ForgetPassword)
 	// 排行榜
 	r.GET("/rank-list", service.GetRankList)
 	// 提交记录

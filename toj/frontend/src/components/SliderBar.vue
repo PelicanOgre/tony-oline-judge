@@ -64,6 +64,7 @@ const menuList=[
 </style>
 <style scoped lang="scss">
 .logo{
+  font-size: 20px;
   height: 50px;
   display: none;
   background-color: #0087bf;
@@ -79,6 +80,7 @@ const menuList=[
  .slide-bar{
     //  width: 30%;
      transition: 0.3s;
+     font-size: 20px;
      min-width: 250px;
     
      background-color: #0087bf;
@@ -88,9 +90,11 @@ const menuList=[
    }
    .el-menu-vertical-demo{
      flex: 1;
+     font-size: 20px;
    }
    .headers{
      display: flex;
      align-items: center;
+     font-size: 20px;
    }
 </style>

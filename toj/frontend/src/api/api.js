@@ -27,6 +27,9 @@ export default{
 	register(param){//register
 		return http.postUncode(`/register`,param)
 	},
+	forgetPassword(param){//register
+		return http.postUncode(`/forget-password`,param)
+	},
 	delSort(param){//category delete 
 		return http.delete(`/admin/category-delete`,param)
 	},
