@@ -4,15 +4,16 @@
             <div class="left">
                     <h3>{{detail.title}}</h3>
                      <div class="msg">
-                       Category: <span v-for="mi in detail.problem_categories" :key="mi.id">
+                       Category:  v-for="mi in detail.problem_categories" :key="mi.id">
                                 {{mi.category_basic.name}}
-                            </span>
+                            </span:>
                     </div>
                     <div class="msg">
-                        <span>Create At: {{detail.created_at}}</span>
+                        
                         <span>Submit Number: {{detail.submit_num}}</span>
                         <span>Accept Number: {{detail.pass_num}}</span>
                         <span>Maximum Runtime: {{detail.max_runtime}}ms</span>
+                        <span>Maximum Runtime: {{detail.max_mem}}Mb</span>
                         
                     </div>
                     <div v-html="detail.content"></div>
@@ -49,6 +50,7 @@ getDetail()
 </script>
 <style scoped lang="scss">
 .ques-cont{
+    font-size: 20px;
     display: flex;
     height: 100%;
     .left{
@@ -57,7 +59,8 @@ getDetail()
         border-right: 10px solid #eee;
         padding: 10px;
         .msg{
-            font-size: 12px;
+            color:black;
+            font-size: 15px;
             
             span{
                 margin-right: 20px;

@@ -49,7 +49,7 @@ const loading=ref(false)
 const router=useRouter()
 const mystatus=ref('')
  const submitList=ref([])
-const status=ref(['Unknown','Accepted','Wrong Answer','Timeout','Memory Exceed','Compile Error'])
+const status=ref(['All','Accepted','Wrong Answer','Timeout','Memory Exceed','Compile Error'])
 
  const route=useRoute()
  const pageSize=ref(10)

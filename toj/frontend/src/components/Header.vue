@@ -97,6 +97,7 @@ const handleCommand = (command: string | number | object) => {
    padding: 0 10px;
  } */
  .el-dropdown-link{
+  color: white;
    display: flex;
    font-size: 20px;
    justify-content: space-between;
