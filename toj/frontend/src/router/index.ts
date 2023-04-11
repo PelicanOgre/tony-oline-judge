@@ -5,8 +5,14 @@ const routes=[
     {
         path:"/",
         redirect:"/questionList",
+
+        
         
 
+    },
+    {
+        path:"/logout",
+        redirect:"/questionList"
     },
     {
         path:"/index",
@@ -46,6 +52,12 @@ const routes=[
                 name:'submitList',
 
                 component:()=>import('../page/submit/index.vue')
+            },
+            {
+                path:'/management',
+                name:'management',
+
+                component:()=>import('../page/manager/index.vue')
             },
             
             

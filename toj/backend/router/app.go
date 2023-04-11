@@ -45,6 +45,8 @@ func Router() *gin.Engine {
 	authAdmin.POST("/problem-create", service.ProblemCreate)
 	// 问题修改
 	authAdmin.PUT("/problem-modify", service.ProblemModify)
+	// 题目删除
+	authAdmin.DELETE("/problem-delete", service.ProblemDelete)
 	// 分类创建
 	authAdmin.POST("/category-create", service.CategoryCreate)
 	// 分类修改
@@ -53,6 +55,8 @@ func Router() *gin.Engine {
 	authAdmin.DELETE("/category-delete", service.CategoryDelete)
 	// 获取测试案例
 	authAdmin.GET("/test-case", service.GetTestCase)
+
+	authAdmin.DELETE("/testcase-delete", service.TestCaseDelete)
 
 	// 用户私有方法
 	authUser := r.Group("/user", middlewares.AuthUserCheck())

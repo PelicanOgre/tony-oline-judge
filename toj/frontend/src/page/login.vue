@@ -15,8 +15,8 @@
             class="login-form"
             :size="formSize"
         >
-          <el-form-item label="Username" prop="username">
-            <el-input v-model="ruleForm.username"/>
+          <el-form-item label="Email" prop="mail">
+            <el-input placeholder="please enter email" v-model="ruleForm.mail"/>
           </el-form-item>
 
           <el-form-item label="Password" prop="password">
@@ -84,9 +84,7 @@
           :size="formSize"
       >
       
-      <el-form-item label="Username" prop="name">
-            <el-input v-model="resetPasswordForm.name"/>
-          </el-form-item>
+    
         <el-form-item label="Email" prop="mail">
           <el-input v-model="resetPasswordForm.mail"/>
         </el-form-item>
@@ -141,7 +139,7 @@ const registFormRef = ref<FormInstance>()
 const resetPasswordFormRef = ref<FormInstance>()
 const remainTime = ref(60)
 const ruleForm = reactive({
-  username: "",
+  mail: "",
   password: "",
 });
 const registForm = reactive({
@@ -152,7 +150,6 @@ const registForm = reactive({
 });
 
 const resetPasswordForm = reactive({
-  name: "",
   password: "",
   mail: '',
   code: ''
@@ -161,7 +158,7 @@ const resetPasswordForm = reactive({
 
 const rules = reactive({
   username: [
-    {required: true, message: "Please Enter Username", trigger: "blur"},
+    {required: true, message: "Please Enter Email", trigger: "blur"},
 
   ],
   name: [
@@ -190,16 +187,20 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       api.login(ruleForm).then((res: any) => {
+        console.log(res);
         if (res.data.code == 200) {
           ElMessage.success('Login successfully!')
 
           localStorage.setItem("token", res.data.data.token);
           store.commit("loginSucc", res.data.data.token);
-          store.commit("setUser", {username: ruleForm.username, is_admin: res.data.data.is_admin});
+          store.commit("setUser", {username: res.data.data.name, is_admin: res.data.data.is_admin});
           localStorage.setItem('is_admin', res.data.data.is_admin)
 
-          localStorage.setItem('username', ruleForm.username)
+          localStorage.setItem('username', res.data.data.name)
+          localStorage.setItem('is_login', "1")
           emits("loginSucc");
+          var s=window.location.href
+          window.location.replace(s.split("/")[0])
         } else {
           ElMessage.error(res.data.msg)
         }
@@ -225,8 +226,11 @@ const subRegister = async (formEl: FormInstance | undefined) => {
 
           localStorage.setItem('username', registForm.name)
           localStorage.setItem('is_admin', res.data.data.is_admin)
+          localStorage.setItem('is_login', "1")
 
           emits("loginSucc");
+          var s=window.location.href
+          window.location.replace(s.split("/")[0])
         } else {
           ElMessage.error(res.data.msg)
 
@@ -244,16 +248,21 @@ const subReset = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       api.forgetPassword(resetPasswordForm).then((res:any) => {
+        console.log(res);
         if (res.data.code == 200) {
-          ElMessage.success('reset Successfully!')
+          console.log(res)
+          ElMessage.success('Password Reset Successfully!')
           localStorage.setItem("token", res.data.data.token);
           store.commit("loginSucc", res.data.data.token);
-          store.commit("setUser", {username: resetPasswordForm.name, is_admin: res.data.data.is_admin});
+          store.commit("setUser", {username: res.data.data.name, is_admin: res.data.data.is_admin});
 
-          localStorage.setItem('username', resetPasswordForm.name)
+          localStorage.setItem('username', res.data.data.name)
           localStorage.setItem('is_admin', res.data.data.is_admin)
+          localStorage.setItem('is_login', "1")
 
           emits("loginSucc");
+          var s=window.location.href
+          window.location.replace(s.split("/")[0])
         } else {
           ElMessage.error(res.data.msg)
 

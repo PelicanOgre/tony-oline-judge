@@ -168,6 +168,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/problem-delete": {
+            "delete": {
+                "tags": [
+                    "管理员私有方法"
+                ],
+                "summary": "题目删除",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "identity",
+                        "name": "identity",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":\"200\",\"data\":\"\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/problem-modify": {
             "put": {
                 "tags": [
@@ -246,6 +278,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/testcase-delete": {
+            "delete": {
+                "tags": [
+                    "管理员私有方法"
+                ],
+                "summary": "分类删除",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "authorization",
+                        "name": "authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "identity",
+                        "name": "problem_identity",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":\"200\",\"data\":\"\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/category-list": {
             "get": {
                 "tags": [
@@ -305,13 +369,6 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "name",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "description": "password",
                         "name": "password",
                         "in": "formData",
@@ -337,8 +394,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "username",
-                        "name": "username",
+                        "description": "mail",
+                        "name": "mail",
                         "in": "formData"
                     },
                     {
@@ -558,8 +615,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "user_identity",
-                        "name": "user_identity",
+                        "description": "username",
+                        "name": "username",
                         "in": "query"
                     },
                     {

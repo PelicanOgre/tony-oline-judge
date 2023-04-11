@@ -26,6 +26,7 @@
     >
       <addQues @cancel="closeQues" :selectQues="selectQues" @submit="subQues" :sortList="sortList" v-if="quesDialog"></addQues> 
       
+      
     </el-dialog>
     <div class="flex-box">
       <div class="sort-list">
@@ -78,12 +79,12 @@
               </div>
               <div class="msg">
                 <span>Create At: {{ item.created_at }}</span>
-                <span>S{{ item.submit_num }}</span>
+                <span>Submitions Num: {{ item.submit_num }}</span>
                 <span>Pass Num: {{ item.pass_num }}</span>
               </div>
             </div>
             <div class="edit">
-              <!-- <el-icon title="删除"><delete /></el-icon> -->
+              <el-icon title="Delete" @click="delQues(item)"><delete /></el-icon>
               <el-icon title="Modify" @click="editQues(item)"><edit /></el-icon>
             </div>
           </div>
@@ -111,6 +112,8 @@ import { ElMessageBox, ElMessage } from "element-plus";
 import api from "../../api/api.js";
 import { useRouter } from "vue-router";
 import addQues from './add.vue'
+import modQues from './modefy.vue'
+import { registerLoading } from "echarts";
 const router = useRouter();
 const loading = ref(false);
 const quesList = ref([]);
@@ -182,7 +185,29 @@ const delSort = (item: any) => {
       // catch error
     });
 };
+const delQues = (item: any) => {
+  ElMessageBox.confirm("Are you sure you want to delete this problem?", "Hint", {
+    confirmButtonText: "Yes",
+    cancelButtonText: "No",
+    type: "warning",
+  })
+    .then(() => {
+      api.delProblem({ identity: item.identity }).then((res) => {
+        if (res.data.code == 200) {
+          ElMessage.success(res.data.msg);
+          getProblemList();
+         
+        } else {
+          ElMessage.warning(res.data.msg);
+        }
+      });
+    })
+    .catch(() => {
+      // catch error
+    });
+};
 const getProblem = (sortId: number | null) => {
+  
   actSort.value = sortId;
   loading.value = true;
   api
@@ -210,6 +235,16 @@ const getSortList = () => {
   });
 };
 getSortList();
+
+const getProblemList = () => {
+  api.getProblemList({}).then((res) => {
+    if (res && res.data) {
+      quesList.value = res.data.data.list;
+    }
+  });
+};
+getProblemList();
+
 const subSort = () => {
   if (selectSort.value.name) {
     if (selectSort.value.id) {

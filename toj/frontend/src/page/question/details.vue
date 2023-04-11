@@ -4,9 +4,9 @@
             <div class="left">
                     <h3>{{detail.title}}</h3>
                      <div class="msg">
-                       Category:  v-for="mi in detail.problem_categories" :key="mi.id">
+                       Category:  <span v-for="mi in detail.problem_categories" :key="mi.id">
                                 {{mi.category_basic.name}}
-                            </span:>
+                            </span>
                     </div>
                     <div class="msg">
                         

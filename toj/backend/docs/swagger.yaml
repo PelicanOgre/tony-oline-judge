@@ -139,6 +139,27 @@ paths:
       summary: 问题创建
       tags:
       - 管理员私有方法
+  /admin/problem-delete:
+    delete:
+      parameters:
+      - description: authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: identity
+        in: query
+        name: identity
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"code":"200","data":""}'
+          schema:
+            type: string
+      summary: 题目删除
+      tags:
+      - 管理员私有方法
   /admin/problem-modify:
     put:
       parameters:
@@ -190,6 +211,27 @@ paths:
       summary: 测试案例列表
       tags:
       - 管理员私有方法
+  /admin/testcase-delete:
+    delete:
+      parameters:
+      - description: authorization
+        in: header
+        name: authorization
+        required: true
+        type: string
+      - description: identity
+        in: query
+        name: problem_identity
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"code":"200","data":""}'
+          schema:
+            type: string
+      summary: 分类删除
+      tags:
+      - 管理员私有方法
   /category-list:
     get:
       parameters:
@@ -226,11 +268,6 @@ paths:
         name: code
         required: true
         type: string
-      - description: name
-        in: formData
-        name: name
-        required: true
-        type: string
       - description: password
         in: formData
         name: password
@@ -247,9 +284,9 @@ paths:
   /login:
     post:
       parameters:
-      - description: username
+      - description: mail
         in: formData
-        name: username
+        name: mail
         type: string
       - description: password
         in: formData
@@ -390,9 +427,9 @@ paths:
         in: query
         name: problem_identity
         type: string
-      - description: user_identity
+      - description: username
         in: query
-        name: user_identity
+        name: username
         type: string
       - description: status
         in: query

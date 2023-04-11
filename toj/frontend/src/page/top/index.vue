@@ -1,20 +1,20 @@
+
+
 <template>
     <div class="top-list">
         
         <div class="list">
-            <div class="item" v-for="item in rankList" :key="item.id">
+            <div class="item" v-for="(item,index) in rankList"  :key="index">
                 
                     <div class="title">
-                        {{item.id}}.
+                        {{index+1}}.
                         {{item.name}}
-                        <div class="sort">
-                            <span>{{item.mail}}</span>
-                        </div>
+                       
                     </div>
                     <div class="msg">
                         
                         <span>Submitions: {{item.submit_num}}</span>
-                        <span>Pass: {{item.pass_num}}</span>
+                        <span>Passed: {{item.pass_num}}</span>
                     </div>
                 
                 <!-- <div class="edit">
@@ -46,11 +46,13 @@
 import api from '../../api/api.js'
 import {useRouter} from 'vue-router'
 const router=useRouter()
- const rankList=ref([])
- const sortList=ref([])
- const pageSize=ref(10)
+const rankList=ref([])
+const sortList=ref([])
+const pageSize=ref(10)
 const currentPage=ref(1)
 const total=ref(0)
+
+
  
 const handleSizeChange = (val: number) => {
    getRankList()
@@ -137,7 +139,7 @@ getRankList( )
     .msg{
         font-size: 14px;
        
-        color: #999;
+        color: #000;
         span{
             margin-right: 40px;
         }

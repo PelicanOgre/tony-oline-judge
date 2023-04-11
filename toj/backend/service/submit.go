@@ -10,12 +10,13 @@ import (
 	"os/exec"
 	"runtime"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 	"toj/define"
 	"toj/helper"
 	"toj/models"
-	"strings"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -26,7 +27,7 @@ import (
 // @Param page query int false "page"
 // @Param size query int false "size"
 // @Param problem_identity query string false "problem_identity"
-// @Param user_identity query string false "user_identity"
+// @Param username query string false "username"
 // @Param status query int false "status"
 // @Success 200 {string} json "{"code":"200","data":""}"
 // @Router /submit-list [get]
@@ -43,10 +44,24 @@ func GetSubmitList(c *gin.Context) {
 	list := make([]models.SubmitBasic, 0)
 
 	problemIdentity := c.Query("problem_identity")
-	userIdentity := c.Query("user_identity")
+	username := c.Query("username")
+	print(username)
+	print(1)
+	data := new(models.UserBasic)
+	err = models.DB.Omit("password").Where("name = ? ", username).Find(&data).Error
+	print(data.Identity)
+	if err != nil {
+		print(2)
+		return
+	}
+
 	status, _ := strconv.Atoi(c.Query("status"))
-	tx := models.GetSubmitList(problemIdentity, userIdentity, status)
+	print(status)
+	tx := models.GetSubmitList(problemIdentity, data.Identity, status)
+	print(tx)
+
 	err = tx.Count(&count).Offset(page).Limit(size).Find(&list).Error
+
 	if err != nil {
 		log.Println("Get Problem List Error:", err)
 		c.JSON(http.StatusOK, gin.H{
@@ -120,7 +135,7 @@ func Submit(c *gin.Context) {
 	// 答案正确的channel
 	AC := make(chan int)
 	// 非法代码的channel
-	EC := make(chan struct{})
+	EC := make(chan int)
 
 	// 通过的个数
 	passCount := 0
@@ -139,7 +154,8 @@ func Submit(c *gin.Context) {
 	}
 	if !v {
 		go func() {
-			EC <- struct{}{}
+			EC <- 1
+
 		}()
 	} else {
 		for _, testCase := range pb.TestCases {
@@ -153,7 +169,7 @@ func Submit(c *gin.Context) {
 				if err != nil {
 					log.Fatalln(err)
 				}
-				print("i")
+
 				print(testCase.Input)
 				io.WriteString(stdinPipe, testCase.Input+"\n")
 
@@ -170,14 +186,12 @@ func Submit(c *gin.Context) {
 				var em runtime.MemStats
 				runtime.ReadMemStats(&em)
 
-				print("t")
-				print(testCase.Output)
-				print("o")
-				print(out.String())
-
 				// 答案错误
 				if strings.TrimRight(testCase.Output, "\n") != strings.TrimRight(out.String(), "\n") {
-
+					print("t")
+					print(testCase.Output)
+					print("o")
+					print(out.String())
 					WA <- 1
 					return
 				}
@@ -257,4 +271,10 @@ func Submit(c *gin.Context) {
 			"msg":    msg,
 		},
 	})
+	print(sb.Path)
+	cmd1 := exec.Command("rm", "-rf", sb.Path)
+	if err := cmd1.Run(); err != nil {
+		log.Fatal(err)
+	}
+
 }

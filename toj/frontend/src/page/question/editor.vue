@@ -7,7 +7,7 @@
     </div>
     <div id="codeEditBox"></div>
     <div class="submit">
-      <el-button type="primary" @click="submitCode" :loading="loading">Submit</el-button>
+      <el-button type="primary" @click="submitCode" :loading="loading" aria-disabled="is_admin_user">Submit</el-button>
     </div>
     <div class="sub-box">
      Result: {{msg}}
@@ -29,6 +29,7 @@ import {ElMessage} from 'element-plus'
 const text=ref('')
 const route=useRoute()
 const language=ref('go')
+
 const msg=ref()
 const loading=ref(false)
 // 
@@ -85,7 +86,7 @@ const editorInit = () => {
             overviewRulerBorder: false, // 不要滚动条的边框  
         }) : 
         editor.setValue("");
-        // console.log(editor)
+        console.log(editor)
         // 监听值的变化
         editor.onDidChangeModelContent((val:any) => {
             text.value = editor.getValue();

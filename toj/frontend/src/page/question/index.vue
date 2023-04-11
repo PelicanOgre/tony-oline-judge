@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="ques-list">
     <div class="sort-list">
@@ -66,12 +68,18 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, ref } from "@vue/reactivity";
+
+
+import {computed, ref} from 'vue'
+import {useStore} from 'vuex'
 import { Edit, Histogram, List } from "@element-plus/icons-vue";
 import api from "../../api/api.js";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 const router = useRouter();
+const store=useStore()
 const loading=ref(false)
+const isLogin=computed(()=>store.state.isLogin)
 const quesList = ref([]);
 const sortList = ref([]);
 const pageSize=ref(10)
@@ -113,10 +121,17 @@ api.getSortList({}).then((res) => {
   }
 });
 const toDetail = (item: any) => {
-  router.push({
+  if(isLogin.value !=  "1"){
+    ElMessage.warning("Please Login/Register")
+  }
+  else{
+    router.push({
     path: "/questionDetail",
     query: item,
   });
+
+  }
+ 
 };
 const toRank = (item: any) => {
   router.push({
@@ -182,7 +197,7 @@ const toSubList = (item: any) => {
   }
   .msg {
     font-size: 14px;
-    color: #999;
+    color: #000;
     span {
       margin-right: 20px;
     }

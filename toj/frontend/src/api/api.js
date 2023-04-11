@@ -18,6 +18,9 @@ export default{
 	getSubmitList(param){//Submit List
 		return http.get(`/submit-list`,param)
 	},
+	getUserSubmitList(param){//Submit List
+		return http.get(`/usersubmit-list`,param)
+	},
 	sendCode(param){//Send Code
 		return http.postUncode(`/send-code`,param)
 	},
@@ -27,7 +30,7 @@ export default{
 	register(param){//register
 		return http.postUncode(`/register`,param)
 	},
-	forgetPassword(param){//register
+	forgetPassword(param){//forget-password
 		return http.postUncode(`/forget-password`,param)
 	},
 	delSort(param){//category delete 
@@ -41,6 +44,9 @@ export default{
 	},
 	editProblem(param){//problem modify
 		return http.putJson(`/admin/problem-modify`,param)
+	},
+	delProblem(param){//category delete 
+		return http.delete(`/admin/problem-delete`,param)
 	},
 	editSort(param){//category modify
 		return http.put(`/admin/category-modify`,param)

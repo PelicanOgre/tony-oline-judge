@@ -64,7 +64,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm(ruleFormRef)"
-      >Create/Modify
+      >Modify
       </el-button
       >
       <el-button @click="closeBox">Cancel</el-button>

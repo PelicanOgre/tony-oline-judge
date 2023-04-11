@@ -110,12 +110,21 @@ func CodeSave(code []byte) (string, error) {
 // CheckGoCodeValid
 func CheckGoCodeValid(path string) (bool, error) {
 	b, err := ioutil.ReadFile(path)
+
+	fmt.Println("code")
+	fmt.Println(string(b))
+
 	if err != nil {
 		return false, err
 	}
 	code := string(b)
+	if len(code) == 0 {
+		return false, nil
+	}
+	x := false
 	for i := 0; i < len(code)-6; i++ {
 		if code[i:i+6] == "import" {
+			x = true
 			var flag byte
 			for i = i + 7; i < len(code); i++ {
 				if code[i] == ' ' {
@@ -155,6 +164,10 @@ func CheckGoCodeValid(path string) (bool, error) {
 				}
 			}
 		}
+
+	}
+	if !x{
+		return false, nil
 	}
 	return true, nil
 }

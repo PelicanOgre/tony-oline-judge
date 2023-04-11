@@ -47,14 +47,14 @@ func GetUserDetail(c *gin.Context) {
 // Login
 // @Tags 公共方法
 // @Summary 用户登录
-// @Param username formData string false "username"
+// @Param mail formData string false "mail"
 // @Param password formData string false "password"
 // @Success 200 {string} json "{"code":"200","data":""}"
 // @Router /login [post]
 func Login(c *gin.Context) {
-	username := c.PostForm("username")
+	email := c.PostForm("mail")
 	password := c.PostForm("password")
-	if username == "" || password == "" {
+	if email == "" || password == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
 			"msg":  "Required information is empty",
@@ -64,12 +64,12 @@ func Login(c *gin.Context) {
 	password = helper.GetMd5(password)
 
 	data := new(models.UserBasic)
-	err := models.DB.Where("name = ? AND password = ? ", username, password).First(&data).Error
+	err := models.DB.Where("mail = ? AND password = ? ", email, password).First(&data).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusOK, gin.H{
 				"code": -1,
-				"msg":  "Username or Password error",
+				"msg":  "Email or Password error",
 			})
 			return
 		}
@@ -92,6 +92,7 @@ func Login(c *gin.Context) {
 		"code": 200,
 		"data": map[string]interface{}{
 			"token":    token,
+			"name":     data.Name,
 			"is_admin": data.IsAdmin,
 		},
 	})
@@ -206,6 +207,23 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	data = new(models.UserBasic)
+	err = models.DB.Where("mail = ? ", mail).First(&data).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusOK, gin.H{
+				"code": -1,
+				"msg":  "Email or Password error",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Get UserBasic Error:" + err.Error(),
+		})
+		return
+	}
+
 	// 生成 token
 	token, err := helper.GenerateToken(userIdentity, name, data.IsAdmin)
 	if err != nil {
@@ -219,6 +237,8 @@ func Register(c *gin.Context) {
 		"code": 200,
 		"data": map[string]interface{}{
 			"token": token,
+			"name":  data.Name,
+			"is_admin" : data.IsAdmin,
 		},
 	})
 }
@@ -271,16 +291,14 @@ func GetRankList(c *gin.Context) {
 // @Summary 忘记密码
 // @Param mail formData string true "mail"
 // @Param code formData string true "code"
-// @Param name formData string true "name"
 // @Param password formData string true "password"
 // @Success 200 {string} json "{"code":"200","data":""}"
 // @Router /forget-password [post]
 func ForgetPassword(c *gin.Context) {
 	mail := c.PostForm("mail")
 	userCode := c.PostForm("code")
-	name := c.PostForm("name")
 	password := c.PostForm("password")
-	if mail == "" || userCode == "" || name == "" || password == "" {
+	if mail == "" || userCode == "" || password == "" {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
 			"msg":  "parameter is incorrect",
@@ -326,13 +344,11 @@ func ForgetPassword(c *gin.Context) {
 	userIdentity := helper.GetUUID()
 	data := &models.UserBasic{
 		Identity:  userIdentity,
-		Name:      name,
 		Password:  helper.GetMd5(password),
 		Mail:      mail,
-		CreatedAt: models.MyTime(time.Now()),
 		UpdatedAt: models.MyTime(time.Now()),
 	}
-	err = models.DB.Model(new(models.UserBasic)).Where("name = ?", name).Updates(data).Error
+	err = models.DB.Model(new(models.UserBasic)).Where("mail = ?", mail).Updates(data).Error
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
@@ -341,8 +357,25 @@ func ForgetPassword(c *gin.Context) {
 		return
 	}
 
+	data = new(models.UserBasic)
+	err = models.DB.Where("mail = ? ", mail).First(&data).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusOK, gin.H{
+				"code": -1,
+				"msg":  "Email or Password error",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Get UserBasic Error:" + err.Error(),
+		})
+		return
+	}
+
 	// 生成 token
-	token, err := helper.GenerateToken(userIdentity, name, data.IsAdmin)
+	token, err := helper.GenerateToken(userIdentity, data.Name, data.IsAdmin)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": -1,
@@ -354,6 +387,8 @@ func ForgetPassword(c *gin.Context) {
 		"code": 200,
 		"data": map[string]interface{}{
 			"token": token,
+			"name":     data.Name,
+			"is_admin": data.IsAdmin,
 		},
 	})
 }

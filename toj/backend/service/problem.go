@@ -1,15 +1,17 @@
 package service
 
 import (
-	"toj/define"
-	"toj/helper"
-	"toj/models"
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+	"toj/define"
+	"toj/helper"
+	"toj/models"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 // GetProblemList
@@ -273,5 +275,87 @@ func ProblemModify(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  "Problem modified successfully",
+	})
+}
+
+// ProblemDelete
+// @Tags 管理员私有方法
+// @Summary 题目删除
+// @Param authorization header string true "authorization"
+// @Param identity query string true "identity"
+// @Success 200 {string} json "{"code":"200","data":""}"
+// @Router /admin/problem-delete [delete]
+func ProblemDelete(c *gin.Context) {
+	identity := c.Query("identity")
+	fmt.Println(identity)
+	if identity == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "parameter is incorrect",
+		})
+		return
+	}
+	// 删除testcase
+	err := models.DB.Where("problem_identity = ?", identity).Delete(new(models.TestCase)).Error
+	if err != nil {
+		log.Println("Delete TestCase Error:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Delete failed",
+		})
+		return
+	}
+
+	data := new(models.ProblemBasic)
+	err = models.DB.Where("identity = ?", identity).
+		Preload("ProblemCategories").Preload("ProblemCategories.CategoryBasic").
+		First(&data).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusOK, gin.H{
+				"code": -1,
+				"msg":  "The problem does not exist",
+			})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Get ProblemDetail Error:" + err.Error(),
+		})
+		return
+	}
+	//删除category
+	err = models.DB.Where("problem_id = ?", data.ID).Delete(new(models.ProblemCategory)).Error
+	if err != nil {
+		log.Println("Delete TestCase Error:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Delete failed",
+		})
+		return
+	}
+	//删除submit
+	err = models.DB.Where("problem_identity = ?", identity).Delete(new(models.SubmitBasic)).Error
+	if err != nil {
+		log.Println("Delete TestCase Error:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Delete failed",
+		})
+		return
+	}
+
+	err = models.DB.Where("identity = ?", identity).Delete(new(models.ProblemBasic)).Error
+	if err != nil {
+		log.Println("Delete ProblemBasic Error:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Delete failed",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "Delete successfully",
 	})
 }

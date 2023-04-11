@@ -1,12 +1,13 @@
 package service
 
 import (
-	"toj/define"
-	"toj/models"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strconv"
+	"toj/define"
+	"toj/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 // GetTestCase
@@ -54,5 +55,36 @@ func GetTestCase(c *gin.Context) {
 			"list":  data,
 			"count": count,
 		},
+	})
+}
+
+// TestCaseDelete
+// @Tags 管理员私有方法
+// @Summary 分类删除
+// @Param authorization header string true "authorization"
+// @Param problem_identity query string true "identity"
+// @Success 200 {string} json "{"code":"200","data":""}"
+// @Router /admin/testcase-delete [delete]
+func TestCaseDelete(c *gin.Context) {
+	identity := c.Query("problem_identity")
+	if identity == "" {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "parameter is incorrect",
+		})
+		return
+	}
+	err := models.DB.Where("problem_identity = ?", identity).Delete(new(models.TestCase)).Error
+	if err != nil {
+		log.Println("Delete TestCase Error:", err)
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "Delete failed",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": 200,
+		"msg":  "Delete successfully",
 	})
 }

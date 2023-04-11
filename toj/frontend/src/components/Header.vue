@@ -12,7 +12,8 @@ const store=useStore()
 const router=useRouter()
 const collapse=computed(()=>store.state.collapse)
 const isLogin=computed(()=>store.state.isLogin)
-const is_admin=computed(()=>store.state.is_admin)
+var is_admin=computed(()=>store.state.is_admin)
+const is_admin_login=localStorage.getItem("is_admin")
 const username=computed(()=>store.state.username)
 function changeMenu(){
   store.commit('changeCollapse',!collapse.value)
@@ -21,11 +22,23 @@ const handleCommand = (command: string | number | object) => {
   if(command=='a'){
     localStorage.clear()
     // location.reload()
+    
+
     store.commit('logout')
 
-    router.push('/questionList')
+    var s=window.location.href
+    window.location.replace(s.split("/")[0])
+
   }else if(command=='b'){//分类
-    router.push('/questionManage')
+    console.log(is_admin_login)
+
+    if (is_admin){
+      router.push('/questionManage')
+    }
+    else{
+      ElMessage.error("Administrator Rights Required")
+    }
+    
   }else if(command=='c'){//忘记密码
     router.push('/forgetPassword')
 
@@ -51,9 +64,9 @@ const handleCommand = (command: string | number | object) => {
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item :icon="Plus" command="b" v-if="is_admin">Management</el-dropdown-item>
-            <el-dropdown-item :icon="Plus" command="a">Logout</el-dropdown-item>
             
+            <el-dropdown-item :icon="Plus" command="a">Logout</el-dropdown-item>
+  
           </el-dropdown-menu>
         </template>
       </el-dropdown>

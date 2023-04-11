@@ -1,5 +1,8 @@
 <template>
 <div :class="['slide-bar',collapse?'collapse':'']">
+  <keep-alive>
+
+  </keep-alive>
     <div class="logo" v-if="!collapse">
        <router-link to="/index">Tony Online Judge</router-link>
      </div>
@@ -17,10 +20,15 @@
         :collapse="collapse"
         router
          mode="horizontal"
+         font-size="20px"
        
       >
-       <sliderbar-item v-for="(item,index) in menuList" :index="index" :key="item.id" :item="item"></sliderbar-item>  
+      <keep-alive include="DataSet">
+        <sliderbar-item font-size="20px" v-for="(item,index) in menuList" :index="index" :key="item.id" :item="item"></sliderbar-item>  
         
+
+      </keep-alive>
+       
       </el-menu>
        <v-header></v-header>
      </div>
@@ -42,6 +50,7 @@ import {useRoute} from 'vue-router'
 import SliderbarItem from './sliderBar/SliderbarItem.vue'
  import vHeader from "../components/Header.vue";
 const store=useStore()
+const is_admin=localStorage.getItem("is_admin")
 const collapse=computed(()=>store.state.collapse)
 const route=useRoute()
   const onRoutes = computed(() => {
@@ -53,11 +62,26 @@ const route=useRoute()
 // const handleClose = (key: string, keyPath: string[]) => {
 //   console.log(key, keyPath)
 // }
-const menuList=[
-  {name:'Problems',id:1,path:'/questionList' },
+
+
+var menuList=[
+  {name:'Problems',id:1,path:'/questionList',},
   {name:'Submissions',id:2,path:'/submitList'},
   {name:'Rank',id:3,path:'/topList'},
+  
 ]
+var m={name:'Management',id:4,path:'/management'};
+if(is_admin === "1"){ 
+  if(menuList.length<4){
+    menuList.push(m);
+  }
+}
+else{
+  if(menuList.length>3){
+    menuList.pop();
+  }
+}
+
 </script>
 <style>
 
@@ -85,6 +109,7 @@ const menuList=[
     
      background-color: #0087bf;
      &.collapse{
+      font-size: 20px;
        min-width: 0;
      }
    }
