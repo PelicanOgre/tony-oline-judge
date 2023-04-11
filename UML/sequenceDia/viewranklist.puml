@@ -1,0 +1,30 @@
+@startuml login
+
+actor User as user
+participant Web as web
+participant UserService as us
+
+activate web
+
+user -> web: click "Rank"
+
+activate us
+web -> us: getRankList()
+us -> web : getRankList()
+deactivate us
+web -> user : displayRankList()
+
+
+
+
+
+   
+
+
+
+
+
+
+deactivate web
+
+@enduml

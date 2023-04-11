@@ -1,0 +1,50 @@
+@startuml TOJ
+
+left to right direction
+
+
+actor user as u
+actor administrator as a
+
+package TOJ {
+  usecase "login" as UC1
+  usecase "forget password" as UC2
+  usecase "do problems" as UC3
+  usecase "view submissions" as UC4
+  usecase "view rank" as UC5
+ 
+
+  usecase "manage problems" as UC8
+  usecase "manage category" as UC9
+
+
+}
+
+
+u-->UC1
+u-->UC2
+u-->UC3
+u-->UC4
+u-->UC5
+
+a-->UC8
+a-->UC9
+
+a --|> u
+
+
+
+'UC2.> UC7:include
+
+' UC5.>du:include
+' UC5.>cu:include
+
+' UC6.>dq:include
+' UC6.>cq:include
+
+' UC7.>dc:include
+' UC7.>cc:include
+
+
+
+@enduml

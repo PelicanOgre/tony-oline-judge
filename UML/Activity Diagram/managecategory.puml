@@ -1,0 +1,44 @@
+@startuml kizzy
+
+
+(*)-->"manage category"
+
+if "is administrator" then
+    -->[yes]"have the authority to manage category"
+    -->===B1===
+    --> click on "add category"
+    --> "input the category name"
+    --> click on "done"
+    --> "add successfully"
+    --> ===B2===
+    
+    ===B1=== -->"choose one category"
+    --> ===B3===
+    --> click on "delete"
+        if "has problems" then
+            -->[yes] "can not delete"
+            --> ===B4===
+        else
+            -->[no]"delete successfully"
+        endif
+    --> ===B4===
+
+    ===B3=== --> click on "modify"
+        -->"modify category name"
+        -->"modify successfully"
+    --> ===B4===
+
+    ===B3=== --> "click on this category"
+    --> "view problems list under this category"
+    --> ===B4===
+
+    --> ===B2=== 
+
+
+   
+    -->(*)
+
+else
+    -->[no](*)
+endif
+@enduml

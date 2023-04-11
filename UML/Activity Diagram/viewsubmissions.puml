@@ -1,0 +1,14 @@
+@startuml kizzy
+
+
+(*)-->click on "Submissions"
+if "log in" then
+    -->[yes]"show submission list"
+    -->"choose one submission"
+    -->"view previous codes"
+    -->(*)
+else
+    -->[no](*)
+    
+endif
+@enduml

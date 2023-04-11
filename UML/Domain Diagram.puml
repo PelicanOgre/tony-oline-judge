@@ -1,0 +1,104 @@
+@startuml domainModel
+skinparam packageStyle rect
+skinparam style strictuml
+skinparam DefaultFontName Arial
+skinparam DultFontSize 16
+skinparam DefaultFontStyle bold
+skinparam ArrowColor #gray
+skinparam ArrowThickness 2.2
+left to right direction
+
+class "User" as User {
+ ID : int
+  username : string
+    email : string
+    password : string
+    PassNum : int
+    SubNum : int
+    IsAdmin : int
+} 
+class "Administrator" as Administrator{
+    ID : int
+    username : string
+    email : string
+    password : string
+    PassNum : int
+    SubNum : int
+    IsAdmin : int
+}
+
+class "Problem" as Problem{
+    ID : int
+    title : string
+    content : string
+    CategoryId : list<int>
+    TestCasDId : list<int>
+    PassNum : int
+    SubNum : int
+}
+
+class "TestCase" as TestCase{
+    ID : int
+    problemId : int
+    input : string
+    output : int
+}
+class "Category" as Category{
+    ID : int
+    name : string
+}
+
+class "Submission" as Submission{
+    ID : int
+    'code : string
+    status : int 
+    time : datatime
+    userId : int
+    problemId : int
+    }
+
+package Service <<folder>>{
+    class "UserService" as UserService{
+    GetUserDetail()
+    Login()
+    Register()
+    GetRankList()
+    FogetPassword()
+}
+class "ProblemService" as ProblemService{
+    GetProblemDetail()
+    ProblemCreate()
+    ProblemModify()
+    ProblemDelete()
+    GetProblemList()
+}
+class "CategoryService" as CategoryService{
+    GetCategoryList()
+    CategoryCreate()
+    CategoryModify()
+    CategoryDelete()
+}
+class "TestCaseService" as TestCaseService{
+    GetTestCase()
+    TestCaseDelete()
+}
+class "SubmissionService" as SubmissionService{
+    GetSubmissionList()
+    Submit()
+}
+
+}
+
+Administrator "1" --|> "1" User : Generalize
+Administrator "1..*" --> "*" Problem : Manage 
+Administrator "1..*" --> "*" Category : Manage 
+
+
+User "1" -right-> "*" Problem : Does
+(User, Problem) - Submission
+
+Problem "*" --> "1..*" Category : Belong
+Problem "1" *-- "1..*" TestCase : Compose
+
+
+@enduml

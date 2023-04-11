@@ -1,0 +1,44 @@
+@startuml login
+
+actor User as user
+participant Web as web
+
+participant ProblemService as ps
+participant SubmissionService as ss
+participant TestCaseService as ts
+
+activate web
+user -> web: click "Problems"
+activate ps
+web -> ps : getProblemList()
+ps ->web : retuenProblemList()
+deactivate ps
+
+web -> user : displayProblemList()
+user -> web : click one Problem
+alt if login
+  activate ps
+web -> ps : getProlemDetail()
+ps -> web : returnProblemDetail()
+deactivate ps
+
+web -> user :displayProblemDetail()
+user -> web : write code and click "submit"
+
+activate ss
+web -> ss : submitForm()
+activate ts
+ss -> ts : getTestCase()
+ts ->ss : returnTestCase()
+deactivate ts
+ss -> ss : judge()
+ss -> web : returnResult()
+deactivate ss
+web -> user : displayResult()
+deactivate web
+
+else if don't login
+  web -> user : displayPleaseLoginMessage()
+end
+
+@enduml

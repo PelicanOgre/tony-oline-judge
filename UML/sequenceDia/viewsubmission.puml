@@ -1,0 +1,34 @@
+@startuml login
+
+actor User as user
+participant Web as web
+
+
+participant SubmissionService as ss
+
+
+activate web
+
+user -> web: click "Submissions"
+alt if login
+  alt if user is administrator
+  activate ss
+    web -> ss : getAllSubmissionList()
+    ss ->web : reternAllSubmissionList()
+  deactivate ss
+    web -> user : displayAllSubmissionListList()
+  else if user is not administrator
+  activate ss
+    web -> ss : getUserSubmissionList()
+    ss ->web : reternUserSubmissionList()
+  deactivate ss
+
+    web -> user : displayUserSubmissionListList()
+  end
+else if don't login
+  web -> user : displayPleaseLoginMessage()
+end
+
+deactivate web
+
+@enduml

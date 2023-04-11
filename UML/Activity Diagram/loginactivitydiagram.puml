@@ -1,0 +1,25 @@
+@startuml kizzy
+
+
+(*)-->"Login"
+
+if "registered" then
+    -->[yes]"input email and password"
+    if "verification" then
+        -->[yes] "login succeeded"
+        -->(*)
+    else
+        -->[no](*)
+    endif
+
+else
+    -->[no]"input information"
+    if "verify email" then
+        -->[yes]"register successfully"
+        -->"input email and password"
+    else 
+        -->[no](*)
+
+    endif
+endif
+@enduml

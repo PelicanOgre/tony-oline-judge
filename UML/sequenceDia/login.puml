@@ -1,0 +1,58 @@
+@startuml login
+
+actor User as user
+participant Web as web
+participant UserService as us
+
+activate web
+
+user -> web: click "login"
+
+alt if don't have an account
+    user -> web: click "register"
+    web -> user: showRegistrationForm()
+    user -> web : input all required information()
+    user -> web : click "send code"
+    web -> us : requestCode()
+    us -> user : sendCode()
+    user -> web : enter code
+    user -> web: click "Register"
+
+    activate us
+    web -> us : submitRegisterForm()
+    us -> us: Register()
+    alt if the code is wrong
+        us -> web :returnRegisterError()
+        web -> user : displayErrorMessage()
+    else if the code is correct 
+        us -> web :returnRegisterSuccess()
+        web -> user : displaySuccessMessage()
+    end
+    deactivate us
+  
+
+    
+
+else if already have an account
+    web -> user: showLoginForm()
+    user -> web : input all required information()
+    user -> web: click "Login"
+
+    activate us
+    web -> us: submitForm()
+    us -> us : Login()
+    alt if info is wrong
+        us -> web :returnLoginError()
+        web -> user : displayLoginFailedMessage()
+    else if ibfo is correct 
+        us -> web :returnLoginSuccess()
+        web -> user : displayLoginSuccessMessage()
+        web -> user: redirect()
+    end
+    deactivate us
+
+end
+
+deactivate web
+
+@enduml

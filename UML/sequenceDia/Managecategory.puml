@@ -1,0 +1,73 @@
+@startuml login
+
+actor Administrator as a 
+participant Web as web
+
+participant CategoryService as cs
+
+activate web
+
+a -> web: click "management"
+activate cs
+web -> cs : getCategoryList()
+cs -> web : returnCategoryList()
+deactivate cs
+web -> a: displayManagementPage()
+
+alt if click "add category"
+a -> web : click "add category"
+web ->a : displayCategoryForm()
+a->web:inputCategoryName()
+a->web : click "done"
+activate cs
+web->cs:submitCategoryForm()
+cs->cs:categoryCreate()
+cs->web:returnCreateStatus()
+deactivate cs
+web->a:displayCreateStatus()
+
+else if click "delete category"
+a -> web : click "delete category"
+web->a:displayHint()
+alt if click "yes"
+a ->web: click "yes"
+activate cs
+web -> cs: requestDelete()
+cs->cs:categoryDelete()
+cs->web:returnDeleteStatus()
+deactivate cs
+web->a:displayDeleteStatus()
+else if click "no"
+a ->web: click "no"
+web -> a :cancelHint()
+end
+
+else if click "modify category"
+a -> web : click "modify category"
+activate cs
+web -> cs : getCategoryDetail()
+cs -> web : returnCategoryDetail()
+deactivate cs
+web ->a : displayCategoryForm()
+a->web:change Category Name
+a -> web : click "done"
+activate cs
+web->cs:submitCategoryForm()
+cs->cs:categoryModify()
+cs->web:returnModifyStatus()
+deactivate cs
+web->a:displayModifyStatus()
+
+end
+
+
+
+
+
+
+
+
+
+deactivate web
+
+@enduml

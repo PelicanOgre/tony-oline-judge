@@ -1,0 +1,49 @@
+@startuml kizzy
+
+
+(*)-->"manage problems"
+
+if "is administrator" then
+    -->[yes]"have the authority to manage problems"
+
+    -->===B1===
+    --> click on "add problem"
+    -->"input question's information"
+    --> click on "create"
+    if"correct"then
+        -->[yes]"add successfully"
+        --> ===B2===
+    else
+        -->[no]"input question's information"
+    endif
+    
+    ===B1=== -->"choose one problem"
+    --> ===B3===
+    --> click on "modify"
+    -->"modify problem's information"
+    -->click on "save"
+    if"correct"then
+        -->[yes]"modify successfully"
+        --> ===B4===
+    else
+        -->[no]"modify problem's information"
+    endif
+  
+    ===B3=== --> click on "delete"
+    if "sure" then
+        -->[yes]"delete successfully"
+        --> ===B4===
+    else
+        -->[no] "cancel delete"
+        --> ===B4===
+    endif
+    
+
+    ===B3=== --> "click on this problem"
+    --> "view pass numbers of each problem"
+    --> ===B4===
+    --> ===B2=== 
+    -->(*)
+else
+    -->[no](*)
+@enduml

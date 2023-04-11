@@ -1,0 +1,20 @@
+@startuml kizzy
+
+
+(*)-->"choose one problem"
+if "log in" then
+    -->[yes]"write code"
+    -->"submit"
+    if "case test" then
+        -->[pass]"accepted"
+        -->(*)
+    else
+        -->[don't pass]"rejected"
+        -->"write code"
+    endif
+else
+    -->[no]"Please log in"
+    -->(*)
+endif
+
+@enduml

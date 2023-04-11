@@ -1,0 +1,11 @@
+@startuml kizzy
+
+
+(*)--> click on "Rank"
+--> "show rank list"
+--> "view user ranking"
+'-->"click on find me"
+'-->"view user's own ranking"
+-->(*)
+    
+@enduml
