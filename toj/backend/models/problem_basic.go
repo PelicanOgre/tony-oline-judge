@@ -5,6 +5,7 @@ import (
 )
 
 type ProblemBasic struct {
+	gorm.Model
 	ID                uint               `gorm:"primarykey;" json:"id"`
 	CreatedAt         MyTime             `json:"created_at"`
 	UpdatedAt         MyTime             `json:"updated_at"`

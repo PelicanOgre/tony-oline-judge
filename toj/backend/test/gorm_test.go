@@ -10,7 +10,7 @@ import (
 )
 
 func TestGormTest(t *testing.T) {
-	dsn := "root:admin@tcp(127.0.0.1:3306)/toj?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:passpass@tcp(127.0.0.1:3306)/toj?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
